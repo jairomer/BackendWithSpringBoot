@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import com.backend.prueba.PriceController;
+import com.backend.prueba.adapter.v1.price.PriceController;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

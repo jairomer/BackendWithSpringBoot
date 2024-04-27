@@ -1,4 +1,4 @@
-package com.backend.prueba.model;
+package com.backend.prueba.model.db;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
@@ -6,17 +6,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.NotNull;;
 
+
 @Entity
-@Table(name = "BRANDS")
-public class Brand {
+@Table(name = "Products")
+public class Product {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @NotNull
-    @Column(name = "BRAND_NAME")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "BRAND_ID")
+    private Brand name;
 }

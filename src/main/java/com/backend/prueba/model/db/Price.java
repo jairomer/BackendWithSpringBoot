@@ -1,4 +1,4 @@
-package com.backend.prueba.model;
+package com.backend.prueba.model.db;
 
 import java.math.BigDecimal;
 
@@ -22,7 +22,7 @@ public class Price {
     @Id
     @Column(name = "PRICE_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")
