@@ -1,6 +1,7 @@
 package com.backend.prueba.adapter.v1.price;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.prueba.model.ProductPrice;
+import com.backend.prueba.model.service.ProductPrice;
 import com.backend.prueba.services.ProductPriceService;
 
 @RestController
@@ -41,11 +42,10 @@ public class PriceController {
                     "Unsigned product_id and brand_id must be have a positive value.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
             }
-            try {
-                ProductPrice productPrice = this.priceService.getProductPrice(productId, brandId, date);
-                return ResponseEntity.ok(productPrice);
-            } catch (Exception e) {
-            }
-            return ResponseEntity.internalServerError().body("internal server error");
+            Optional<ProductPrice> productPrice = this.priceService.getProductPrice(productId, brandId, date);
+            // TODO: We might need to include internal server error handling here.
+            return productPrice.isPresent() ?
+                ResponseEntity.ok(productPrice.get()) :
+                ResponseEntity.notFound().build();
     }
 }
