@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-public class BaseController {
+public class PriceController {
     @GetMapping("/")
     public String getHelloWorld() {
         return "Hello, World!";

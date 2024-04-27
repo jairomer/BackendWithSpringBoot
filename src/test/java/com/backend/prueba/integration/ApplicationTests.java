@@ -1,19 +1,17 @@
-package com.backend.prueba;
+package com.backend.prueba.integration;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.text.StringContainsInOrder.stringContainsInOrder;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import io.restassured.RestAssured; 
+import com.backend.prueba.PriceController;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -23,11 +21,11 @@ class ApplicationTests {
 	private int port;
 
 	@Autowired
-	private BaseController baseController;
+	private PriceController priceController;
 	
 	@Test
 	void contextLoads() {
-		assertThat(baseController, notNullValue());
+		assertThat(priceController, notNullValue());
 	}
 
 	@Test
@@ -39,7 +37,6 @@ class ApplicationTests {
 		.extract()
 		.body()
 		.asString();
-		
 		assertThat(responseBody, stringContainsInOrder("Hello, World!"));
 	}
 
