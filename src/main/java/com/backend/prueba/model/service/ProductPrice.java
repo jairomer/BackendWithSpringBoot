@@ -5,10 +5,14 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import com.backend.prueba.model.service.exceptions.PricePrecisionException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.backend.prueba.model.service.exceptions.InvalidValueException;
 import com.backend.prueba.model.service.exceptions.MissingFieldsException;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NonNull;
 
 /**
@@ -16,14 +20,23 @@ import lombok.NonNull;
  */
 public class ProductPrice implements Serializable{
 
-    @Getter @NonNull private final Long productId;
-    @Getter @NonNull private final Long brandId;
-    @Getter @NonNull private final Long priceListId;
-    @Getter @NonNull private final Timestamp startDate;
-    @Getter @NonNull private final Timestamp endDate;
-    @Getter @NonNull private final BigDecimal finalPrice;
+    @Setter @Getter @NonNull private Long productId;
+    @Setter @Getter @NonNull private Long brandId;
+    @Setter @Getter @NonNull private Long priceListId;
+    @Setter @Getter @NonNull private Timestamp startDate;
+    @Setter @Getter @NonNull private Timestamp endDate;
+    @Setter @Getter @NonNull private BigDecimal finalPrice;
 
-    private ProductPrice(@NonNull Long productId, @NonNull Long brandId, @NonNull Long priceListId,
+    public ProductPrice() {
+        this.productId = 0L;
+        this.brandId = 0L;
+        this.priceListId = 0L;
+        this.startDate = new Timestamp(0);
+        this.endDate = new Timestamp(Long.MAX_VALUE);
+        this.finalPrice = new BigDecimal(0.0);
+    }
+
+    public ProductPrice(@NonNull Long productId, @NonNull Long brandId, @NonNull Long priceListId,
             @NonNull Timestamp startDate, @NonNull Timestamp endDate, @NonNull BigDecimal finalPrice) {
         this.productId = productId;
         this.brandId = brandId;
@@ -35,6 +48,12 @@ public class ProductPrice implements Serializable{
 
     /**
      * Creates validated ProductPrice instances.
+     * 
+     * A ProductPrice must verify the following postconditions:
+     *  - Start date is before end date.
+     *  - Final price has precision of 2, not more nor less.
+     *  - All fields need to have a defined value. 
+     * 
      */
     static public class Builder {
         @Getter @NonNull private Long productId;
@@ -54,20 +73,12 @@ public class ProductPrice implements Serializable{
             throw new InvalidValueException("productId", productId);
         }
         
-        public Builder setProductId(int productId) throws InvalidValueException {
-            return this.setProductId((long) productId);
-        }
-        
         public Builder setBrandId(Long brandId) throws InvalidValueException {
             if (brandId > 0) {
                 this.brandId = brandId;
                 return this;
             }
             throw new InvalidValueException("brandId", brandId);
-        }
-        
-        public Builder setBrandId(int brandId) throws InvalidValueException {
-            return this.setBrandId((long) brandId);
         }
 
         public Builder setPriceListId(Long priceListId) throws InvalidValueException {
@@ -76,10 +87,6 @@ public class ProductPrice implements Serializable{
                 return this;
             }
             throw new InvalidValueException("priceListId", priceListId);
-        }
-        
-        public Builder setPriceListId(int priceListId) throws InvalidValueException {
-            return this.setPriceListId((long) priceListId);
         }
         
         public Builder setStartDate(Timestamp startDate) throws InvalidValueException {
@@ -113,13 +120,29 @@ public class ProductPrice implements Serializable{
         public Builder setFinalPrice(double price) throws PricePrecisionException, InvalidValueException {
             return setFinalPrice(new BigDecimal(price));
         }
-
+        
         public ProductPrice build() throws MissingFieldsException {
             try {
                 return new ProductPrice(productId, brandId, priceListId, startDate, endDate, finalPrice);
             } catch (Exception e)  {
                 throw new MissingFieldsException(e);
             }
+        }
+
+        public static ProductPrice buildFromJson(String json) throws PricePrecisionException, InvalidValueException, JsonMappingException, JsonProcessingException, MissingFieldsException  {
+
+            ObjectMapper mapper = new ObjectMapper();
+            ProductPrice readObj = mapper.readValue(json, ProductPrice.class);
+
+            Builder builder = new Builder();
+            builder = builder.setBrandId(readObj.getBrandId());
+            builder = builder.setProductId(readObj.getProductId());
+            builder = builder.setPriceListId(readObj.getPriceListId());
+            builder = builder.setFinalPrice(readObj.getFinalPrice());
+            builder = builder.setStartDate(readObj.getStartDate());
+            builder = builder.setEndDate(readObj.getEndDate());
+
+            return builder.build();
         }
     }
 

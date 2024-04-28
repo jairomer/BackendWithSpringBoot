@@ -19,9 +19,9 @@ public class ProductPriceBuildingAndValidationTest {
     public void TestProductPriceAssemblyHappyPath() {
         assertDoesNotThrow(() -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setBrandId((long)1);
-            builder = builder.setProductId(1);
-            builder = builder.setPriceListId(1);
+            builder = builder.setBrandId(1L);
+            builder = builder.setProductId(1L);
+            builder = builder.setPriceListId(1L);
             builder = builder.setFinalPrice(0.0);
             builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
             builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
@@ -42,8 +42,8 @@ public class ProductPriceBuildingAndValidationTest {
             MissingFieldsException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setProductId(1);
-            builder = builder.setPriceListId(1);
+            builder = builder.setProductId(1L);
+            builder = builder.setPriceListId(1L);
             builder = builder.setFinalPrice(0.0);
             builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
             builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
@@ -60,8 +60,8 @@ public class ProductPriceBuildingAndValidationTest {
             MissingFieldsException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setBrandId((long)1);
-            builder = builder.setPriceListId(1);
+            builder = builder.setBrandId(1L);
+            builder = builder.setPriceListId(1L);
             builder = builder.setFinalPrice(0.0);
             builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
             builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
@@ -78,8 +78,8 @@ public class ProductPriceBuildingAndValidationTest {
             MissingFieldsException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setProductId(1);
-            builder = builder.setBrandId((long)1);
+            builder = builder.setProductId(1L);
+            builder = builder.setBrandId(1L);
             builder = builder.setFinalPrice(0.0);
             builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
             builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
@@ -96,9 +96,9 @@ public class ProductPriceBuildingAndValidationTest {
             MissingFieldsException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setProductId(1);
-            builder = builder.setBrandId((long)1);
-            builder = builder.setPriceListId(1);
+            builder = builder.setProductId(1L);
+            builder = builder.setBrandId(1L);
+            builder = builder.setPriceListId(1L);
             builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
             builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
@@ -114,9 +114,9 @@ public class ProductPriceBuildingAndValidationTest {
             MissingFieldsException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setProductId(1);
-            builder = builder.setBrandId((long)1);
-            builder = builder.setPriceListId(1);
+            builder = builder.setProductId(1L);
+            builder = builder.setBrandId(1L);
+            builder = builder.setPriceListId(1L);
             builder = builder.setFinalPrice(0.0);
             builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
@@ -132,9 +132,9 @@ public class ProductPriceBuildingAndValidationTest {
             MissingFieldsException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setProductId(1);
-            builder = builder.setBrandId((long)1);
-            builder = builder.setPriceListId(1);
+            builder = builder.setProductId(1L);
+            builder = builder.setBrandId(1L);
+            builder = builder.setPriceListId(1L);
             builder = builder.setFinalPrice(0.0);
             builder = builder.setStartDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 

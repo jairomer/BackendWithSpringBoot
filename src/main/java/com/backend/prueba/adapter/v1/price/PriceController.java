@@ -26,12 +26,6 @@ public class PriceController {
         priceService = new ProductPriceService();
     }
 
-    @GetMapping("/")
-    public String getHelloWorld() {
-        return "Hello, World!";
-    }
-
-
     @GetMapping("/api/v1/price/{brand_id}/{product_id}/{date}")
     @ResponseBody
     public ResponseEntity<Object> getPriceForPoductOnDate(
