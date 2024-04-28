@@ -5,9 +5,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,11 +21,11 @@ import com.backend.prueba.services.ProductPriceService;
 @RestController
 public class PriceController {
 
+    @Autowired
     ProductPriceService priceService;
-
-    PriceController() {
-        priceService = new ProductPriceService();
-    }
+    
+        
+    private static final Logger logger = LoggerFactory.getLogger(PriceController.class);
 
     @GetMapping("/api/v1/price/{brand_id}/{product_id}/{date}")
     @ResponseBody
@@ -33,18 +34,28 @@ public class PriceController {
         @PathVariable(name="brand_id", required=true) Long brandId,
         @PathVariable(name="date", required=true) @DateTimeFormat(iso = DateTimeFormat.ISO.NONE) String dateString) {
             // We will assume that we do not have time precision up to the millisecond level.
-            LocalDateTime pathDate = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-            Timestamp timestamp = Timestamp.valueOf(pathDate);
-
-
-            if (productId < 0 || brandId <= 0 ) {
-                ProblemDetail pd = ProblemDetail.forStatusAndDetail(
-                    HttpStatus.BAD_REQUEST,
-                    "Unsigned product_id and brand_id must be have a positive value.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
+            Timestamp timestamp = null;
+            try {
+                LocalDateTime pathDate = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+                timestamp = Timestamp.valueOf(pathDate);
+            } catch (Exception e) {
+                    logger.debug("Unable to parse timestamp on path: %s", dateString);
+            } finally {
+                if (productId < 0 || brandId <= 0 || timestamp == null) {
+                    // Uppon a path that is nott parseable to a meaningfull search, we will just return 404. 
+                    String uri = String.format("/api/v1/price/%d/%d/%s", brandId, productId, dateString);
+                    logger.debug("Client attempting to access non parseable URI: %s", uri);
+                    return ResponseEntity.notFound().build();
+                }
             }
-            Optional<ProductPrice> productPrice = this.priceService.getProductPrice(productId, brandId, timestamp);
-            // TODO: We might need to include internal server error handling here.
+            Optional<ProductPrice> productPrice = Optional.empty();
+            try {
+                productPrice = this.priceService.getProductPrice(productId, brandId, timestamp);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                return ResponseEntity.internalServerError().build();
+            }
+
             return productPrice.isPresent() ?
                 ResponseEntity.ok(productPrice.get()) :
                 ResponseEntity.notFound().build();

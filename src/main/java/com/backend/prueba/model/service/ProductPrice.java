@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-import com.backend.prueba.model.service.exceptions.PricePrecisionException;
+import com.backend.prueba.model.service.exceptions.PriceScaleException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -106,9 +106,9 @@ public class ProductPrice implements Serializable{
         }
 
 
-        public Builder setFinalPrice(BigDecimal price) throws PricePrecisionException, InvalidValueException {
-            if (price.precision() > 2) {
-                throw new PricePrecisionException("finalPrice", price);
+        public Builder setFinalPrice(BigDecimal price) throws PriceScaleException, InvalidValueException {
+            if (price.scale() > 2) {
+                throw new PriceScaleException("finalPrice", price);
             }
             if (price.longValue() < 0) {
                 throw new InvalidValueException("finalPrice", price.toString());
@@ -117,7 +117,7 @@ public class ProductPrice implements Serializable{
             return this;
         }
         
-        public Builder setFinalPrice(double price) throws PricePrecisionException, InvalidValueException {
+        public Builder setFinalPrice(double price) throws PriceScaleException, InvalidValueException {
             return setFinalPrice(new BigDecimal(price));
         }
         
@@ -129,7 +129,7 @@ public class ProductPrice implements Serializable{
             }
         }
 
-        public static ProductPrice buildFromJson(String json) throws PricePrecisionException, InvalidValueException, JsonMappingException, JsonProcessingException, MissingFieldsException  {
+        public static ProductPrice buildFromJson(String json) throws PriceScaleException, InvalidValueException, JsonMappingException, JsonProcessingException, MissingFieldsException  {
 
             ObjectMapper mapper = new ObjectMapper();
             ProductPrice readObj = mapper.readValue(json, ProductPrice.class);
