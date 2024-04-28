@@ -1,15 +1,15 @@
 package com.backend.prueba.services;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lombok.NonNull;
-
 import com.backend.prueba.model.service.ProductPrice;
+
+import lombok.NonNull;
 
 public class ProductPriceService {
     private static final Logger logger = LoggerFactory.getLogger(ProductPriceService.class);
@@ -21,7 +21,7 @@ public class ProductPriceService {
      * @param date
      * @return Optional<ProductPrice>
      */
-    public Optional<ProductPrice> getProductPrice(@NonNull Long productId, @NonNull Long brandId, @NonNull LocalDate date) {
+    public Optional<ProductPrice> getProductPrice(@NonNull Long productId, @NonNull Long brandId, @NonNull Timestamp date) {
         ProductPrice.Builder builder = new ProductPrice.Builder();
         ProductPrice productPrice = null;
         try {
@@ -30,8 +30,8 @@ public class ProductPriceService {
             builder = builder.setPriceListId(brandId);
 
             // TODO: Remove this dummy data.
-            builder = builder.setStartDate(LocalDate.MIN);
-            builder = builder.setEndDate(LocalDate.MAX);
+            builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
             builder = builder.setFinalPrice(new BigDecimal(0));
             productPrice = builder.build();
 

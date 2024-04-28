@@ -5,8 +5,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.text.StringContainsInOrder.stringContainsInOrder;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +44,7 @@ class ApplicationTests {
 	void testPriceFetchingHappyPath() {
 		String responseBody = given()
 		.port(port)
-		.get("/api/v1/price/1/1/2022-01-01")
+		.get("/api/v1/price/1/1/20220101150000")
 		.then()
 		.statusCode(200)
 		.extract()

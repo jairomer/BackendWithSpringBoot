@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,16 +23,16 @@ public class ProductPriceBuildingAndValidationTest {
             builder = builder.setProductId(1);
             builder = builder.setPriceListId(1);
             builder = builder.setFinalPrice(0.0);
-            builder = builder.setStartDate(LocalDate.MIN);
-            builder = builder.setEndDate(LocalDate.MAX);
+            builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
             ProductPrice productPrice = builder.build();
             assertEquals(1, productPrice.getBrandId());
             assertEquals(1, productPrice.getProductId());
             assertEquals(1, productPrice.getPriceListId());
             assertEquals(0.0, productPrice.getFinalPrice().doubleValue());
-            assertEquals(LocalDate.MIN, productPrice.getStartDate());
-            assertEquals(LocalDate.MAX, productPrice.getEndDate());
+            assertEquals(Timestamp.valueOf("2020-06-14 15:00:00"), productPrice.getStartDate());
+            assertEquals(Timestamp.valueOf("2020-12-14 15:00:00"), productPrice.getEndDate());
         });
     }
     
@@ -45,8 +45,8 @@ public class ProductPriceBuildingAndValidationTest {
             builder = builder.setProductId(1);
             builder = builder.setPriceListId(1);
             builder = builder.setFinalPrice(0.0);
-            builder = builder.setStartDate(LocalDate.MIN);
-            builder = builder.setEndDate(LocalDate.MAX);
+            builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
             builder.build();
         });
@@ -63,8 +63,8 @@ public class ProductPriceBuildingAndValidationTest {
             builder = builder.setBrandId((long)1);
             builder = builder.setPriceListId(1);
             builder = builder.setFinalPrice(0.0);
-            builder = builder.setStartDate(LocalDate.MIN);
-            builder = builder.setEndDate(LocalDate.MAX);
+            builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
             builder.build();
         });
@@ -81,8 +81,8 @@ public class ProductPriceBuildingAndValidationTest {
             builder = builder.setProductId(1);
             builder = builder.setBrandId((long)1);
             builder = builder.setFinalPrice(0.0);
-            builder = builder.setStartDate(LocalDate.MIN);
-            builder = builder.setEndDate(LocalDate.MAX);
+            builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
             builder.build();
         });
@@ -99,8 +99,8 @@ public class ProductPriceBuildingAndValidationTest {
             builder = builder.setProductId(1);
             builder = builder.setBrandId((long)1);
             builder = builder.setPriceListId(1);
-            builder = builder.setStartDate(LocalDate.MIN);
-            builder = builder.setEndDate(LocalDate.MAX);
+            builder = builder.setStartDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
             builder.build();
         });
@@ -118,7 +118,7 @@ public class ProductPriceBuildingAndValidationTest {
             builder = builder.setBrandId((long)1);
             builder = builder.setPriceListId(1);
             builder = builder.setFinalPrice(0.0);
-            builder = builder.setEndDate(LocalDate.MAX);
+            builder = builder.setEndDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
             builder.build();
         });
@@ -136,7 +136,7 @@ public class ProductPriceBuildingAndValidationTest {
             builder = builder.setBrandId((long)1);
             builder = builder.setPriceListId(1);
             builder = builder.setFinalPrice(0.0);
-            builder = builder.setStartDate(LocalDate.MAX);
+            builder = builder.setStartDate(Timestamp.valueOf("2020-12-14 15:00:00"));
 
             builder.build();
         });
@@ -193,8 +193,8 @@ public class ProductPriceBuildingAndValidationTest {
             InvalidValueException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setEndDate(LocalDate.MIN);
-            builder = builder.setStartDate(LocalDate.MAX);
+            builder = builder.setEndDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            builder = builder.setStartDate(Timestamp.valueOf("2020-12-14 15:00:00"));
         });
 
         assertThat(exception)
@@ -208,8 +208,8 @@ public class ProductPriceBuildingAndValidationTest {
             InvalidValueException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setStartDate(LocalDate.MAX);
-            builder = builder.setEndDate(LocalDate.MIN);
+            builder = builder.setStartDate(Timestamp.valueOf("2020-12-14 15:00:00"));
+            builder = builder.setEndDate(Timestamp.valueOf("2020-06-14 15:00:00"));
         });
 
         assertThat(exception)

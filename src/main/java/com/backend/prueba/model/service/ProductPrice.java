@@ -2,7 +2,7 @@ package com.backend.prueba.model.service;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 import com.backend.prueba.model.service.exceptions.PricePrecisionException;
 import com.backend.prueba.model.service.exceptions.InvalidValueException;
@@ -19,12 +19,12 @@ public class ProductPrice implements Serializable{
     @Getter @NonNull private final Long productId;
     @Getter @NonNull private final Long brandId;
     @Getter @NonNull private final Long priceListId;
-    @Getter @NonNull private final LocalDate startDate;
-    @Getter @NonNull private final LocalDate endDate;
+    @Getter @NonNull private final Timestamp startDate;
+    @Getter @NonNull private final Timestamp endDate;
     @Getter @NonNull private final BigDecimal finalPrice;
 
     private ProductPrice(@NonNull Long productId, @NonNull Long brandId, @NonNull Long priceListId,
-            @NonNull LocalDate startDate, @NonNull LocalDate endDate, @NonNull BigDecimal finalPrice) {
+            @NonNull Timestamp startDate, @NonNull Timestamp endDate, @NonNull BigDecimal finalPrice) {
         this.productId = productId;
         this.brandId = brandId;
         this.priceListId = priceListId;
@@ -40,8 +40,8 @@ public class ProductPrice implements Serializable{
         @Getter @NonNull private Long productId;
         @Getter @NonNull private Long brandId;
         @Getter @NonNull private Long priceListId;
-        @Getter @NonNull private LocalDate startDate;
-        @Getter @NonNull private LocalDate endDate;
+        @Getter @NonNull private Timestamp startDate;
+        @Getter @NonNull private Timestamp endDate;
         @Getter @NonNull private BigDecimal finalPrice;
 
         public Builder() { }
@@ -82,16 +82,16 @@ public class ProductPrice implements Serializable{
             return this.setPriceListId((long) priceListId);
         }
         
-        public Builder setStartDate(LocalDate startDate) throws InvalidValueException {
-            if (this.endDate != null && this.endDate.isBefore(startDate)) {
+        public Builder setStartDate(Timestamp startDate) throws InvalidValueException {
+            if (this.endDate != null && this.endDate.before(startDate)) {
                 throw new InvalidValueException(startDate, this.endDate);
             }
             this.startDate = startDate;
             return this;
         }
 
-        public Builder setEndDate(LocalDate endDate) throws InvalidValueException {
-            if (this.startDate != null && this.startDate.isAfter(endDate)) {
+        public Builder setEndDate(Timestamp endDate) throws InvalidValueException {
+            if (this.startDate != null && this.startDate.after(endDate)) {
                 throw new InvalidValueException(this.startDate, endDate);
             }
             this.endDate = endDate;

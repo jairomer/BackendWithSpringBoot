@@ -20,28 +20,32 @@ import jakarta.validation.constraints.Min;
 public class Price {
 
     @Id
-    @Column(name = "PRICE_ID")
+    @Column(name = "PRICE_LIST_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+   
+    @Id
+    @Column(
+        name = "PRIORITY",
+        nullable=false,
+        columnDefinition = "int default 0")
+    private int priority;
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")
     private Product product;
 
     @Column(name = "START_DATE")
-    @Temporal(TemporalType.DATE)
-    private java.sql.Date startDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.sql.Timestamp startDate;
 
     @Column(name = "END_DATE")
-    @Temporal(TemporalType.DATE)
-    private java.sql.Date endDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.sql.Timestamp endDate;
 
     @ManyToOne
     @JoinColumn(name = "BRAND_ID", referencedColumnName = "ID")
     private Brand brand;
-
-    @Column(name = "PRIORITY")
-    private int priority;
 
     @Min(value = 0, message = "Price must be greater than or equal to 0")
     @Column(name = "FINAL_PRICE", precision = 10, scale = 2, nullable = false)

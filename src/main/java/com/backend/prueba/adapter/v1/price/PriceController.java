@@ -1,6 +1,8 @@
 package com.backend.prueba.adapter.v1.price;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,14 +37,19 @@ public class PriceController {
     public ResponseEntity<Object> getPriceForPoductOnDate(
         @PathVariable(name="product_id", required=true) Long productId,
         @PathVariable(name="brand_id", required=true) Long brandId,
-        @PathVariable(name="date", required=true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        @PathVariable(name="date", required=true) @DateTimeFormat(iso = DateTimeFormat.ISO.NONE) String dateString) {
+            // We will assume that we do not have time precision up to the millisecond level.
+            LocalDateTime pathDate = LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            Timestamp timestamp = Timestamp.valueOf(pathDate);
+
+
             if (productId < 0 || brandId <= 0 ) {
                 ProblemDetail pd = ProblemDetail.forStatusAndDetail(
                     HttpStatus.BAD_REQUEST,
                     "Unsigned product_id and brand_id must be have a positive value.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
             }
-            Optional<ProductPrice> productPrice = this.priceService.getProductPrice(productId, brandId, date);
+            Optional<ProductPrice> productPrice = this.priceService.getProductPrice(productId, brandId, timestamp);
             // TODO: We might need to include internal server error handling here.
             return productPrice.isPresent() ?
                 ResponseEntity.ok(productPrice.get()) :
