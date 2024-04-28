@@ -1,11 +1,19 @@
 spring: 
     application:
         name: demo
-#    datasource:
-#        url: jdbc:h2:mem:prices
-#    driverClassName: org.h2.Driver
-#    username: sa
-#    password: password
-#
-#    jpa:
-#        database-platform: org.hibernate.dialect.H2Dialect
+    datasource:
+        url: jdbc:h2:mem:prices
+        driverClassName: org.h2.Driver
+        username: sa
+        password: password
+    h2:
+        console:
+            enabled: false
+            path: /h2-console
+            settings:
+                trace: false
+                web-allow-others: false
+ 
+
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
