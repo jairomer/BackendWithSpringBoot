@@ -30,7 +30,7 @@ The following guides illustrate how to use some features concretely:
 mvn compile
 ```
 
-**Launch Unit Tests and Application Tests**
+**Launch unit tests and application tests**
 ```bash
 mvn test
 ```
@@ -45,7 +45,15 @@ mvn clean spring-boot:test-run
 mvn clean spring-boot:run
 ```
 
+**Measure code coverage**
+Code coverage reports created with jacoco need to be visualized via third party tools such as SonarQube.
+```bash
+mvn jacoco:report
+```
+
 ### DevSec with SonarQube
+
+To execute this command you will need a running instance of sonarqube on your development machine.
 
 ```bash
  mvn clean verify sonar:sonar \                                         
@@ -57,4 +65,8 @@ mvn clean spring-boot:run
 
 ### Deploy
 
+TODO
 
+### Monitoring
+
+TODO
