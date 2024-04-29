@@ -32,7 +32,7 @@ public class ProductPrice implements Serializable{
         this.priceListId = 0L;
         this.startDate = new Timestamp(0);
         this.endDate = new Timestamp(Long.MAX_VALUE);
-        this.finalPrice = new BigDecimal(0.0);
+        this.finalPrice = BigDecimal.valueOf(0.0);
     }
 
     public ProductPrice(@NonNull Long productId, @NonNull Long brandId, @NonNull Long priceListId,
@@ -114,8 +114,8 @@ public class ProductPrice implements Serializable{
             return this;
         }
         
-        public Builder setFinalPrice(double price) throws PriceScaleException, InvalidValueException {
-            return setFinalPrice(new BigDecimal(price));
+        public Builder setFinalPrice(Double price) throws PriceScaleException, InvalidValueException {
+            return setFinalPrice(BigDecimal.valueOf(price));
         }
         
         public ProductPrice build() throws MissingFieldsException {

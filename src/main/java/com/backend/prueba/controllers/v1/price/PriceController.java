@@ -39,13 +39,12 @@ public class PriceController {
                 timestamp = Timestamp.valueOf(pathDate);
             } catch (Exception e) {
                     logger.debug("Unable to parse timestamp on path: %s", dateString);
-            } finally {
-                if (productId < 0 || brandId <= 0 || timestamp == null) {
-                    // Uppon a path that is nott parseable to a meaningfull search, we will just return 404. 
-                    String uri = String.format("/api/v1/price/%d/%d/%s", brandId, productId, dateString);
-                    logger.debug("Client attempting to access non parseable URI: %s", uri);
-                    return ResponseEntity.notFound().build();
-                }
+            }
+            if (productId <= 0 || brandId <= 0 || timestamp == null) {
+                // Uppon a path that is nott parseable to a meaningfull search, we will just return 404. 
+                String uri = String.format("/api/v1/price/%d/%d/%s", brandId, productId, dateString);
+                logger.debug("Client attempting to access non parseable URI: %s", uri);
+                return ResponseEntity.notFound().build();
             }
             Optional<ProductPrice> productPrice = Optional.empty();
             try {

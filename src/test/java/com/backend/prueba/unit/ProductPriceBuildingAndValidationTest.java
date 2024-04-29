@@ -3,13 +3,13 @@ package com.backend.prueba.unit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Timestamp;
 
 import org.junit.jupiter.api.Test;
 
-import com.backend.prueba.model.db.Price;
 import com.backend.prueba.model.service.ProductPrice;
 import com.backend.prueba.model.service.exceptions.MissingFieldsException;
 import com.backend.prueba.model.service.exceptions.PriceScaleException;
@@ -59,7 +59,8 @@ class ProductPriceBuildingAndValidationTest {
             builder = builder.setFinalPrice(-1.00);
         });
 
-        assertThat(exception).isInstanceOf(InvalidValueException.class);
+        assertThat(exception).isInstanceOf(InvalidValueException.class)
+            .hasMessageContaining("finalPrice");
     }
     
     @Test()
@@ -181,7 +182,7 @@ class ProductPriceBuildingAndValidationTest {
 
         assertThat(exception)
             .isInstanceOf(InvalidValueException.class)
-            .hasMessageContaining("Invalid value");
+            .hasMessageContaining("brandId");
     }
     
     @Test()
@@ -195,7 +196,7 @@ class ProductPriceBuildingAndValidationTest {
 
         assertThat(exception)
             .isInstanceOf(InvalidValueException.class)
-            .hasMessageContaining("Invalid value");
+            .hasMessageContaining("productId");
     }
 
     
@@ -210,7 +211,7 @@ class ProductPriceBuildingAndValidationTest {
 
         assertThat(exception)
             .isInstanceOf(InvalidValueException.class)
-            .hasMessageContaining("Invalid value");
+            .hasMessageContaining("priceList");
     }
     
     @Test()
@@ -219,7 +220,12 @@ class ProductPriceBuildingAndValidationTest {
             InvalidValueException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setEndDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            try {
+                // This should not throw anything.
+                builder = builder.setEndDate(Timestamp.valueOf("2020-06-14 15:00:00"));
+            } catch (Exception e) {
+                assertFalse(true);
+            }
             builder = builder.setStartDate(Timestamp.valueOf("2020-12-14 15:00:00"));
         });
 
@@ -234,7 +240,12 @@ class ProductPriceBuildingAndValidationTest {
             InvalidValueException.class,
             () -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
-            builder = builder.setStartDate(Timestamp.valueOf("2020-12-14 15:00:00"));
+            try {
+                // This should not throw anything.
+                builder = builder.setStartDate(Timestamp.valueOf("2020-12-14 15:00:00"));
+            } catch (Exception e) {
+                assertFalse(true);
+            }
             builder = builder.setEndDate(Timestamp.valueOf("2020-06-14 15:00:00"));
         });
 
