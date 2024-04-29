@@ -21,3 +21,40 @@ The following guides illustrate how to use some features concretely:
 * [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 
+## Service Lifecycle
+
+### Development
+
+**Compile**
+```bash
+mvn compile
+```
+
+**Launch Unit Tests and Application Tests**
+```bash
+mvn test
+```
+
+**Launch unit tests and run**
+```bash
+mvn clean spring-boot:test-run
+```
+
+**Run**
+```bash
+mvn clean spring-boot:run
+```
+
+### DevSec with SonarQube
+
+```bash
+ mvn clean verify sonar:sonar \                                         
+  -Dsonar.projectKey=BackendWithSpringBoot \
+  -Dsonar.projectName='BackendWithSpringBoot' \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.token=<your project token>
+```
+
+### Deploy
+
+

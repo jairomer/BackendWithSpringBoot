@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 
 import com.backend.prueba.model.service.exceptions.PriceScaleException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.backend.prueba.model.service.exceptions.InvalidValueException;
 import com.backend.prueba.model.service.exceptions.MissingFieldsException;
@@ -55,15 +54,13 @@ public class ProductPrice implements Serializable{
      *  - All fields need to have a defined value. 
      * 
      */
-    static public class Builder {
+    public static class Builder {
         @Getter @NonNull private Long productId;
         @Getter @NonNull private Long brandId;
         @Getter @NonNull private Long priceListId;
         @Getter @NonNull private Timestamp startDate;
         @Getter @NonNull private Timestamp endDate;
         @Getter @NonNull private BigDecimal finalPrice;
-
-        public Builder() { }
 
         public Builder setProductId(Long productId) throws InvalidValueException {
             if (productId > 0) {
@@ -129,7 +126,7 @@ public class ProductPrice implements Serializable{
             }
         }
 
-        public static ProductPrice buildFromJson(String json) throws PriceScaleException, InvalidValueException, JsonMappingException, JsonProcessingException, MissingFieldsException  {
+        public static ProductPrice buildFromJson(String json) throws PriceScaleException, InvalidValueException,JsonProcessingException, MissingFieldsException  {
 
             ObjectMapper mapper = new ObjectMapper();
             ProductPrice readObj = mapper.readValue(json, ProductPrice.class);

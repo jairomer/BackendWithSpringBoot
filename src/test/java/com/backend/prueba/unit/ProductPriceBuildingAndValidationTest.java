@@ -9,14 +9,16 @@ import java.sql.Timestamp;
 
 import org.junit.jupiter.api.Test;
 
+import com.backend.prueba.model.db.Price;
 import com.backend.prueba.model.service.ProductPrice;
 import com.backend.prueba.model.service.exceptions.MissingFieldsException;
+import com.backend.prueba.model.service.exceptions.PriceScaleException;
 import com.backend.prueba.model.service.exceptions.InvalidValueException;
 
-public class ProductPriceBuildingAndValidationTest {
+class ProductPriceBuildingAndValidationTest {
 
     @Test()
-    public void TestProductPriceAssemblyHappyPath() {
+    void TestProductPriceAssemblyHappyPath() {
         assertDoesNotThrow(() -> {
             ProductPrice.Builder builder = new ProductPrice.Builder();
             builder = builder.setBrandId(1L);
@@ -37,7 +39,31 @@ public class ProductPriceBuildingAndValidationTest {
     }
     
     @Test()
-    public void TestProductPriceAssemblyMissingFieldBrandId() {
+    void TestProductPriceAssemblyTestExcesivePriceScale() {
+        PriceScaleException exception = assertThrows(
+            PriceScaleException.class,
+            () -> {
+            ProductPrice.Builder builder = new ProductPrice.Builder();
+            builder = builder.setFinalPrice(1.001);
+        });
+
+        assertThat(exception).isInstanceOf(PriceScaleException.class);
+    }
+    
+    @Test()
+    void TestProductPriceAssemblyTestNegativePrice() {
+        InvalidValueException exception = assertThrows(
+            InvalidValueException.class,
+            () -> {
+            ProductPrice.Builder builder = new ProductPrice.Builder();
+            builder = builder.setFinalPrice(-1.00);
+        });
+
+        assertThat(exception).isInstanceOf(InvalidValueException.class);
+    }
+    
+    @Test()
+    void TestProductPriceAssemblyMissingFieldBrandId() {
         MissingFieldsException exception = assertThrows(
             MissingFieldsException.class,
             () -> {
@@ -55,7 +81,7 @@ public class ProductPriceBuildingAndValidationTest {
     }
     
     @Test()
-    public void TestProductPriceAssemblyMissingFieldProductId() {
+    void TestProductPriceAssemblyMissingFieldProductId() {
         MissingFieldsException exception = assertThrows(
             MissingFieldsException.class,
             () -> {
@@ -73,7 +99,7 @@ public class ProductPriceBuildingAndValidationTest {
     }
     
     @Test()
-    public void TestProductPriceAssemblyMissingFieldPriceListId() {
+    void TestProductPriceAssemblyMissingFieldPriceListId() {
         MissingFieldsException exception = assertThrows(
             MissingFieldsException.class,
             () -> {
@@ -91,7 +117,7 @@ public class ProductPriceBuildingAndValidationTest {
     }
     
     @Test()
-    public void TestProductPriceAssemblyMissingFieldFinalPriceId() {
+    void TestProductPriceAssemblyMissingFieldFinalPriceId() {
         MissingFieldsException exception = assertThrows(
             MissingFieldsException.class,
             () -> {
@@ -109,7 +135,7 @@ public class ProductPriceBuildingAndValidationTest {
     }
     
     @Test()
-    public void TestProductPriceAssemblyMissingFieldStartDate() {
+    void TestProductPriceAssemblyMissingFieldStartDate() {
         MissingFieldsException exception = assertThrows(
             MissingFieldsException.class,
             () -> {
@@ -127,7 +153,7 @@ public class ProductPriceBuildingAndValidationTest {
     }
     
     @Test()
-    public void TestProductPriceAssemblyMissingFieldEndDate() {
+    void TestProductPriceAssemblyMissingFieldEndDate() {
         MissingFieldsException exception = assertThrows(
             MissingFieldsException.class,
             () -> {
@@ -145,7 +171,7 @@ public class ProductPriceBuildingAndValidationTest {
     }
 
     @Test()
-    public void TestProductPriceAssemblyNegativeValueFieldBrandId() {
+    void TestProductPriceAssemblyNegativeValueFieldBrandId() {
         InvalidValueException exception = assertThrows(
             InvalidValueException.class,
             () -> {
@@ -159,7 +185,7 @@ public class ProductPriceBuildingAndValidationTest {
     }
     
     @Test()
-    public void TestProductPriceAssemblyNegativeValueFieldProductId() {
+    void TestProductPriceAssemblyNegativeValueFieldProductId() {
         InvalidValueException exception = assertThrows(
             InvalidValueException.class,
             () -> {
@@ -174,7 +200,7 @@ public class ProductPriceBuildingAndValidationTest {
 
     
     @Test()
-    public void TestProductPriceAssemblyNegativeValueFieldPriceListId() {
+    void TestProductPriceAssemblyNegativeValueFieldPriceListId() {
         InvalidValueException exception = assertThrows(
             InvalidValueException.class,
             () -> {
@@ -188,7 +214,7 @@ public class ProductPriceBuildingAndValidationTest {
     }
     
     @Test()
-    public void TestProductPriceAssemblyStartDateAfterEndDate() {
+    void TestProductPriceAssemblyStartDateAfterEndDate() {
         InvalidValueException exception = assertThrows(
             InvalidValueException.class,
             () -> {
@@ -203,7 +229,7 @@ public class ProductPriceBuildingAndValidationTest {
     } 
 
     @Test()
-    public void TestProductPriceAssemblyEndDateBeforeStartDate() {
+    void TestProductPriceAssemblyEndDateBeforeStartDate() {
         InvalidValueException exception = assertThrows(
             InvalidValueException.class,
             () -> {

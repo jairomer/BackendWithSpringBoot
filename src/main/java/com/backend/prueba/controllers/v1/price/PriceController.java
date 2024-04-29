@@ -1,4 +1,4 @@
-package com.backend.prueba.adapter.v1.price;
+package com.backend.prueba.controllers.v1.price;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -7,12 +7,10 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.prueba.model.service.ProductPrice;
@@ -21,14 +19,15 @@ import com.backend.prueba.services.ProductPriceService;
 @RestController
 public class PriceController {
 
-    @Autowired
-    ProductPriceService priceService;
+    private final ProductPriceService priceService;
+
+    public PriceController(ProductPriceService priceService) {
+        this.priceService = priceService;
+    }
     
-        
     private static final Logger logger = LoggerFactory.getLogger(PriceController.class);
 
     @GetMapping("/api/v1/price/{brand_id}/{product_id}/{date}")
-    @ResponseBody
     public ResponseEntity<Object> getPriceForPoductOnDate(
         @PathVariable(name="product_id", required=true) Long productId,
         @PathVariable(name="brand_id", required=true) Long brandId,

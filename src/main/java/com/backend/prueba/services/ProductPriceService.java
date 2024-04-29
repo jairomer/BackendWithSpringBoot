@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.backend.prueba.model.db.Price;
@@ -20,10 +18,13 @@ import lombok.NonNull;
 
 @Component
 public class ProductPriceService {
-    @Autowired
-    PriceRepositoryImpl priceRepo;
 
+    private final PriceRepositoryImpl priceRepo;
     private static final Logger logger = LoggerFactory.getLogger(ProductPriceService.class);
+
+    public ProductPriceService(PriceRepositoryImpl priceRepository) {
+        this.priceRepo = priceRepository;
+    }
 
     /**
      * Given a product and brand ids, get the ProductPrice on a certain date.
@@ -46,14 +47,15 @@ public class ProductPriceService {
             priceRepo.getPriceForProductAndBrandInTimestamp(productId, brandId, date);
         
         if (priceOfDate.isEmpty()) {
+            logger.info("Received empty results on price query.");
             return Optional.empty();
         }
         
         builder = builder.setPriceListId(priceOfDate.get().getId());
         builder = builder.setStartDate(priceOfDate.get().getStartDate());
         builder = builder.setEndDate(priceOfDate.get().getEndDate());
-        builder = builder.setFinalPrice(priceOfDate.get().getPrice());
-        
+        builder = builder.setFinalPrice(priceOfDate.get().getFinalPrice());
+
         return Optional.ofNullable(builder.build());
     }
     

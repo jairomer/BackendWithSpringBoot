@@ -4,10 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.backend.prueba.model.db.Price;
@@ -18,8 +14,11 @@ import jakarta.persistence.TypedQuery;
 @Repository
 public class PriceRepositoryImpl implements PriceRepository {
     
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
+
+    public PriceRepositoryImpl(EntityManager em) {
+        this.em = em;
+    }
     
     /**
      * Given a product id, a brand id and a timestamp, recover the highest priority price at that timestamp. 

@@ -47,7 +47,7 @@ public class Price {
 
     @Min(value = 0, message = "Price must be greater than or equal to 0")
     @Column(name = "FINAL_PRICE", nullable = false)
-    @Getter @Setter @NonNull private BigDecimal price;
+    @Getter @Setter @NonNull private BigDecimal finalPrice;
 
     @Column(name = "CURRENCY")
     @Getter @Setter @NonNull private String currency;
