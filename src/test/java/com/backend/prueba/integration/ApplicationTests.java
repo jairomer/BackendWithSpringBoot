@@ -199,7 +199,7 @@ class ApplicationTests {
 		.port(port)
 		.get("/api/v1/price/-1/1/20220101150000")
 		.then()
-		.statusCode(404);
+		.statusCode(400);
 	}
 	
 	@Test
@@ -208,7 +208,7 @@ class ApplicationTests {
 		.port(port)
 		.get("/api/v1/price/1/-1/20220101150000")
 		.then()
-		.statusCode(404);
+		.statusCode(400);
 	}
 	
 	@Test
@@ -217,15 +217,33 @@ class ApplicationTests {
 		.port(port)
 		.get("/api/v1/price/1/1/2020")
 		.then()
-		.statusCode(404);
+		.statusCode(400);
 	}
 	
 	@Test
 	void testPriceFetchinBadDateBadChracters() {
 		given()
 		.port(port)
-		.get("/api/v1/price/1/1/3456")
+		.get("/api/v1/price/1/1/abcd")
 		.then()
-		.statusCode(404);
+		.statusCode(400);
+	}
+
+	@Test
+	void testPriceFetchinProductIdBadChracters() {
+		given()
+		.port(port)
+		.get("/api/v1/price/1/abcd/20220101150000")
+		.then()
+		.statusCode(400);
+	}
+
+	@Test
+	void testPriceFetchinBrandIdBadChracters() {
+		given()
+		.port(port)
+		.get("/api/v1/price/abcd/1/20220101150000")
+		.then()
+		.statusCode(400);
 	}
 }
