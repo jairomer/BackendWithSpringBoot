@@ -25,7 +25,7 @@ The following guides illustrate how to use some features concretely:
 
 ### Use Case
 
-Checkout the [./docs/DESIGN.md](DESIGN.md) document to know what this is doing.
+Checkout the [DESIGN.md](./docs/DESIGN.md) document to know what this is doing.
 
 ### Development
 
