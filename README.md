@@ -68,11 +68,3 @@ To execute this command you will need a running instance of sonarqube on your de
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.token=<your project token>
 ```
-
-### Deploy
-
-TODO
-
-### Monitoring
-
-TODO
