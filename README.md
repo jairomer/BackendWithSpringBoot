@@ -23,6 +23,10 @@ The following guides illustrate how to use some features concretely:
 
 ## Service Lifecycle
 
+### Use Case
+
+Checkout the [./docs/DESIGN.md](DESIGN.md) document to know what this is doing.
+
 ### Development
 
 **Compile**

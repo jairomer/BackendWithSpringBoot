@@ -1,0 +1,29 @@
+@startuml
+
+actor HttpClient as client
+
+client -> PriceController : GET /api/v1/<brand id>/<product_id>/<date>
+
+PriceController -> PriceController: Validate\npath variables
+
+PriceController -> ProductPriceService: getProductPrice
+
+ProductPriceService -> ProductPriceService: new ProductPrice.Builder
+
+ProductPriceService -> PriceRepository : getPriceForProductAndBrandInTimestamp
+
+database H2 as db
+
+PriceRepository -> db : send query
+db -> PriceRepository: receive unique response
+
+PriceRepository -> ProductPriceService: Price instance
+
+ProductPriceService -> ProductPriceService: build()
+
+ProductPriceService -> PriceController: ProductPrice instance
+
+PriceController -> client: OK with ProductPrice in body
+
+@enduml
+

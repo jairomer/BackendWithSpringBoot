@@ -1,0 +1,51 @@
+@startuml
+
+package model.service {
+interface Serializable {}
+
+class ProductPrice {
+  Long productId
+  Long brandId
+  Long priceListId
+  Timestamp startDate
+  Timestamp endDate
+  BigDecimal finalPrice
+  
+  getters() & setters()
+}
+
+ProductPrice -up-|> Serializable
+
+class Builder {
+  setProductId(Long productId)
+  setBrandId(Long brandId)
+  setPriceListId(Long priceListId)
+  setStartDate(Timestamp startDate)
+  setEndDate(Timestamp endDate)
+  setFinalPrice(BigDecimal price)
+  ProductPrice build()
+  ProductPrice buildFromJson(String json)
+}
+
+Builder .left..> ProductPrice: "creates"
+
+note "The purpose of this pattern is to \nguarantee the creation of correct\n ProductPrices that will be consistent \n with requirements." as text
+
+package exception {
+  exception "Exception" {}
+  exception InvalidValueException
+  exception MissingFieldsException
+  exception PriceScaleException
+
+  InvalidValueException -down-|>Exception
+  MissingFieldsException -down-|>Exception
+  PriceScaleException -down-|>Exception
+  
+  Builder ...> InvalidValueException: "Throws"
+  Builder ...> MissingFieldsException: "Throws"
+  Builder ...> PriceScaleException: "Throws"
+
+}
+}
+
+@enduml

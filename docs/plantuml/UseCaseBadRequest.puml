@@ -1,0 +1,12 @@
+
+@startuml
+
+actor HttpClient as client
+
+client -> PriceController : GET /api/v1/price/<brand id>/<product_id>/<date>
+
+PriceController -> PriceController !!: Path variables\nare not valid
+
+PriceController -> client: Bad Request Error
+
+@enduml
