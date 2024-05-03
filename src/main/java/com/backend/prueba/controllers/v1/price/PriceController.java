@@ -41,7 +41,7 @@ public class PriceController {
                     logger.debug("Unable to parse timestamp on path: %s", dateString);
             }
             if (productId <= 0 || brandId <= 0 || timestamp == null) {
-                // Uppon a path that is nott parseable to a meaningfull search, we will just return 404. 
+                // Uppon a path that is not parseable to a meaningfull search. 
                 String uri = String.format("/api/v1/price/%d/%d/%s", brandId, productId, dateString);
                 logger.debug("Client attempting to access non parseable URI: %s", uri);
                 return ResponseEntity.badRequest().build();
