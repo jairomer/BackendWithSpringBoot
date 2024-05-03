@@ -6,7 +6,7 @@ The use case involves a request to a REST API service that has to determine the 
 - Product
 - Date
 
-The resulting price will be a data structre containing the following fields:
+The resulting price will be a data structure containing the following fields:
 - Product Id
 - Brand Id
 - Price List Id
@@ -18,7 +18,7 @@ The resulting price will be a data structre containing the following fields:
 
 We were explicitly asked to use an in-memory database to do this project, for which we will use H2.
 
-The H2 instance is managed by spring boot and accessed via Hibernate, but provisioned with an schema and initial data provided in the exercise before the service is operational.
+The H2 instance is managed by spring boot and accessed via Hibernate, but provisioned with a schema and initial data provided in the exercise before the service is operational.
 
 This schema can be found in file [data.sql](https://github.com/jairomer/BackendWithSpringBoot/blob/master/src/main/resources/data.sql) on this repository.
 
