@@ -27,6 +27,8 @@ The following guides illustrate how to use some features concretely:
 
 Checkout the [DESIGN.md](./docs/DESIGN.md) document to know what this is doing.
 
+There is also an [OpenAPI description](./openapi/openapi.yaml) for this service.
+
 ### Development
 
 **Compile**

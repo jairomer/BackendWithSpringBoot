@@ -1,0 +1,88 @@
+openapi: 3.0.3
+info:
+  title: Price Endpoint - OpenAPI 3.0
+  description: |-
+    This is an endpoing to manage the prices of a store.
+  version: 1.0.0
+servers:
+  - url: https://localhost/api/v1/
+tags:
+  - name: prices
+    description: Prices for products in a store.
+paths:
+  /price/{brandId}/{productId}/{date}:
+    get:
+      tags:
+        - price
+      summary: Find price from a branded product at a certain date.
+      description: Returns a single ProductPrice
+      operationId: getProductPrice
+      parameters:
+        - name: brandId
+          in: path
+          description: ID of a brand
+          required: true
+          schema:
+            type: integer
+            format: uint64
+        - name: productId
+          in: path
+          description: ID of a product
+          required: true
+          schema:
+            type: integer
+            format: uint64
+        - name: date
+          in: path
+          description: Current date with hours and minutes without spaces
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9]{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[0-9]{2}[0-9]{2}[0-9]{2}$'
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPrice'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ProductPrice'
+        '400':
+          description: Invalid IDs or date supplied
+        '404':
+          description: Product Price not found
+        '500':
+          description: Internal Server Error
+
+components:
+  schemas:
+    ProductPrice:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: uint64
+          example: 10
+        brandId:
+          type: integer
+          format: uint64
+          example: 10
+        PriceListId:
+          type: integer
+          format: uint64
+          example: 10
+        startDate:
+          type: string
+          format: date-time
+          example: “2019-10-12T07:20:50.52Z”
+        endDate:
+          type: string
+          format: date-time
+          example: “2019-11-12T07:20:52.52Z”
+        finalPrice:
+          type: number
+          format: double
+          example: 10.00
